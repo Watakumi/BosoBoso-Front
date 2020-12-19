@@ -5,6 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+import TimeCardCreateFormDialog from './TimeCardCreateFormDialog';
+
 const useStyles = makeStyles((theme) => ({
   heroContent: {
     backgroundColor: theme.palette.background.paper,
@@ -38,6 +40,9 @@ const HeroContent = () => {
               <Button variant="outlined" color="primary">
                 Sign Up for free
               </Button>
+            </Grid>
+            <Grid item>
+              <TimeCardCreateFormDialog />
             </Grid>
           </Grid>
         </div>
