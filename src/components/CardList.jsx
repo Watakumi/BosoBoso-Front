@@ -12,7 +12,6 @@ const POSTS = gql`
   query {
     posts {
       id
-      title
       description
       createdAt
     }

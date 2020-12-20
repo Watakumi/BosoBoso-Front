@@ -31,13 +31,10 @@ const TimeCard = (props) => {
   const classes = useStyles();
   return (
     <Card className={classes.card}>
-      <CardMedia className={classes.cardMedia} image="https://source.unsplash.com/random" title="Image title" />
+      {/* <CardMedia className={classes.cardMedia} image="https://source.unsplash.com/random" title="Image title" /> */}
       <CardContent className={classes.cardContent}>
-        <Typography gutterBottom variant="h5" component="h2">
-          {props.title}
-        </Typography>
         <Typography>{props.description}</Typography>
-        <Typography>{new Date(props.createdAt).toLocaleString()}</Typography>
+        {/* <Typography>{new Date(props.createdAt).toLocaleString()}</Typography> */}
         <Countdown endTime={new Date('12/25/2020').getTime()} />
       </CardContent>
       <CardActions>
