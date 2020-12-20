@@ -6,11 +6,24 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm, Controller } from 'react-hook-form';
-
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 export default function TimeCardCreateFormDialog() {
   const [open, setOpen] = React.useState(false);
-  const { handleSubmit, control } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const { handleSubmit, control, errors } = useForm();
+
+  const CREATE_CARD = gql`
+    mutation($description: String!) {
+      postCreate(input: { description: $description }) {
+        post {
+          id
+          description
+        }
+      }
+    }
+  `;
+
+  const [postCreate] = useMutation(CREATE_CARD);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,20 +36,17 @@ export default function TimeCardCreateFormDialog() {
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open form dialog
+        Open Form dialog
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">New Card</DialogTitle>
         <DialogContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Controller
-              as={TextField}
-              control={control}
-              defaultValue=""
-              fullWidth
-              label="First name"
-              name="FirstName"
-            />
+          <form
+            onSubmit={handleSubmit((data) => {
+              postCreate({ variables: { description: data.description } });
+              handleClose();
+            })}
+          >
             <Controller
               as={TextField}
               control={control}
@@ -44,8 +54,12 @@ export default function TimeCardCreateFormDialog() {
               multiline
               rows={6}
               fullWidth
-              label="Second name"
-              name="SecondName"
+              label="Description"
+              name="description"
+              rules={{ required: true }}
+              variant="outlined"
+              error={errors.description}
+              helperText={errors.description && 'Your input is required'}
             />
             <Button type="submit" fullWidth variant="contained" color="primary">
               Submit
