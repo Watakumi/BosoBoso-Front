@@ -4,19 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-
+import * as CardQuery from './CardQuery';
 import TimeCard from './TimeCard';
-
-const POSTS = gql`
-  query {
-    posts {
-      id
-      description
-      createdAt
-    }
-  }
-`;
 
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
@@ -36,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const CardList = () => {
-  const { data } = useQuery(POSTS, {});
+  const { data } = useQuery(CardQuery.POSTS, {});
 
   // setInterval(() => {
   //   setCount(count + 1);
@@ -49,7 +38,7 @@ const CardList = () => {
         {data &&
           data.posts.map((post) => (
             <Grid item key={post.id} xs={12} sm={6} md={4}>
-              <TimeCard title={post.title} description={post.description} createdAt={post.createdAt} />
+              <TimeCard id={post.id} description={post.description} createdAt={post.createdAt} />
             </Grid>
           ))}
       </Grid>
