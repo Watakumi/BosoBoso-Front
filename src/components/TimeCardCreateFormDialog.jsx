@@ -7,23 +7,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { useForm, Controller } from 'react-hook-form';
 import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import * as CardMutation from './CardMutation';
+
 export default function TimeCardCreateFormDialog() {
   const [open, setOpen] = React.useState(false);
   const { handleSubmit, control, errors } = useForm();
 
-  const CREATE_CARD = gql`
-    mutation($description: String!) {
-      postCreate(input: { description: $description }) {
-        post {
-          id
-          description
-        }
-      }
-    }
-  `;
-
-  const [postCreate] = useMutation(CREATE_CARD);
+  const [postCreate] = useMutation(CardMutation.CREATE_CARD);
 
   const handleClickOpen = () => {
     setOpen(true);
