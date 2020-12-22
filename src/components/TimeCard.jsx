@@ -9,6 +9,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Countdown from './CountDown';
 import TimeCardUpdateFormDialog from './TimeCardUpdateFormDialog';
+import { useMutation } from '@apollo/react-hooks';
+import * as CardMutation from './CardMutation';
 
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
@@ -40,12 +42,16 @@ const TimeCard = (props) => {
     setOpen(false);
   };
 
+  const [extendedTimesCreate] = useMutation(CardMutation.EXTEND_TIME);
+
+  const endTime = new Date(props.createdAt).getTime() + props.sumExtendedTimes * 1000;
+
   return (
     <Card className={classes.card}>
       {/* <CardMedia className={classes.cardMedia} image="https://source.unsplash.com/random" title="Image title" /> */}
       <CardContent className={classes.cardContent}>
         {/* <Typography>{new Date(props.createdAt).toLocaleString()}</Typography> */}
-        <Countdown endTime={new Date('12/25/2020').getTime()} />
+        <Countdown endTime={endTime} />
         <Typography>{props.description}</Typography>
       </CardContent>
       <CardActions>
@@ -54,6 +60,9 @@ const TimeCard = (props) => {
         </Button>
         <Button size="small" color="primary" onClick={handleOpen}>
           Edit
+        </Button>
+        <Button size="small" color="primary" onClick={() => extendedTimesCreate({ variables: { postId: props.id } })}>
+          Like
         </Button>
         <TimeCardUpdateFormDialog open={open} onClick={handleClose} description={props.description} id={props.id} />
       </CardActions>

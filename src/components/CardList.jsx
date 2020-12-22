@@ -25,20 +25,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const CardList = () => {
-  const { data } = useQuery(CardQuery.POSTS, {});
+  const { data } = useQuery(CardQuery.POSTS_WITH_EXTENDED_TIMES, {});
 
   // setInterval(() => {
   //   setCount(count + 1);
   // }, 1000);
   const classes = useStyles();
-  data && console.log(data.posts);
   return (
     <Container className={classes.cardGrid} maxWidth="md">
       <Grid container spacing={4}>
         {data &&
           data.posts.map((post) => (
             <Grid item key={post.id} xs={12} sm={6} md={4}>
-              <TimeCard id={post.id} description={post.description} createdAt={post.createdAt} />
+              <TimeCard
+                id={post.id}
+                description={post.description}
+                createdAt={post.createdAt}
+                sumExtendedTimes={post.sumExtendedTimes}
+              />
             </Grid>
           ))}
       </Grid>

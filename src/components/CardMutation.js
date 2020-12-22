@@ -21,3 +21,14 @@ export const UPDATE_CARD = gql`
     }
   }
 `;
+
+export const EXTEND_TIME = gql`
+  mutation($postId: ID!) {
+    extendedTimeCreate(input: { postId: $postId, count: 60 }) {
+      extendedTime {
+        id
+        count
+      }
+    }
+  }
+`;
