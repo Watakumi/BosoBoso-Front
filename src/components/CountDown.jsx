@@ -1,29 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-
-const Section = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  color: #254864;
-`;
-
-const Time = styled.div`
-  margin: 0;
-  font-size: 2vw;
-  font-weight: bold;
-`;
-
-const Small = styled.small`
-  font-size: 0.8vw;
-`;
 const Countdown = (props) => {
   const [countdownDate, setCountdownDate] = useState(props.endTime);
   const [state, setState] = useState({
@@ -31,7 +8,33 @@ const Countdown = (props) => {
     hours: 0,
     minutes: 0,
     seconds: 0,
+    distanceToDate: 0,
   });
+
+  const Wrapper = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  `;
+
+  const Section = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    color: #254864;
+  `;
+
+  const Time = styled.div`
+    color: ${(state.distanceToDate % (1000 * 60 * 60)) / (1000 * 60) < 5 ? 'red' : '#254864'};
+    margin: 0;
+    font-size: 2vw;
+    font-weight: bold;
+  `;
+
+  const Small = styled.small`
+    font-size: 0.8vw;
+  `;
 
   useEffect(() => {
     setInterval(() => setNewTime(), 1000);
@@ -42,6 +45,7 @@ const Countdown = (props) => {
       const currentTime = new Date().getTime();
 
       const distanceToDate = countdownDate - currentTime;
+      if (distanceToDate < 0) return null;
 
       let days = Math.floor(distanceToDate / (1000 * 60 * 60 * 24));
       let hours = Math.floor((distanceToDate % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -53,13 +57,15 @@ const Countdown = (props) => {
       days = `${days}`;
       if (numbersToAddZeroTo.includes(hours)) {
         hours = `0${hours}`;
-      } else if (numbersToAddZeroTo.includes(minutes)) {
+      }
+      if (numbersToAddZeroTo.includes(minutes)) {
         minutes = `0${minutes}`;
-      } else if (numbersToAddZeroTo.includes(seconds)) {
+      }
+      if (numbersToAddZeroTo.includes(seconds)) {
         seconds = `0${seconds}`;
       }
 
-      setState({ days: days, hours: hours, minutes, seconds });
+      setState({ days, hours, minutes, seconds, distanceToDate });
     }
   };
 

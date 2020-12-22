@@ -9,3 +9,14 @@ export const POSTS = gql`
     }
   }
 `;
+
+export const POSTS_WITH_EXTENDED_TIMES = gql`
+  query {
+    posts {
+      id
+      description
+      createdAt
+      sumExtendedTimes
+    }
+  }
+`;
